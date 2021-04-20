@@ -1,0 +1,70 @@
+   - hosts: "{{ Server_name }}"
+#   - hosts: all 
+     become: true
+     gather_facts: false
+     tasks:
+      - name: "Gather {{Service_Name}} status on host before action performed"
+        service_facts:
+        register: services_state
+
+      - name: "Systemd: {{Service_Name}} status before action perform"
+        debug:
+          var: services_state.ansible_facts.services["{{Service_Name}}.service"].state
+        register: SD_current_state
+        when: services_state is search("systemd")
+
+      - name: "SysV: {{Service_Name}} status before action perform"
+        debug:
+         var: services_state.ansible_facts.services.{{Service_Name}}.state
+        register: SV_current_state
+#        when: services_state is search("sysv")
+        when: services_state is not search("systemd")
+
+      - name: Perform starting of service
+        service:
+          name: "{{Service_Name}}"
+          state: started
+        register: start_process_triggered
+        when: "SD_current_state is not search('running') and SV_current_state is search('skipped') or SD_current_state is search('skipped') and SV_current_state is not search('running')"
+
+      - name: Verify the port is Opened or not
+        wait_for:
+         port: "{{Port_number}}"
+         timeout: 5
+        ignore_errors: True
+        when: Port_number is defined
+
+      - name: "Gather {{Service_Name}} status on hosts after action performed"
+        service_facts:
+        register: restart_state
+        when: "SD_current_state is not search('running') and SV_current_state is search('skipped') or SD_current_state is search('skipped') and SV_current_state is not search('running')"
+
+      - name: "SystemD: {{Service_Name}} status after action performed"
+        debug:
+         var: restart_state.ansible_facts.services["{{Service_Name}}.service"].state
+        when:
+           - restart_state is search("running")
+           - restart_state is search("systemd")
+
+      - name: "SysV: {{Service_Name}} status before action perform"
+        debug:
+         var: services_state.ansible_facts.services.{{Service_Name}}.state
+        when:
+           - restart_state is search("running")
+#           - restart_state is search("sysv")
+           - restart_state is not search("systemd")
+
+
+      - name: check playbook available for further checks belong "{{Service_Name}}" service
+        shell: "ls {{Service_Name}}_service.yml"
+        ignore_errors: True
+        register: service_playbook
+        delegate_to: localhost
+
+      - name: Proceed for further checks
+        include_tasks: '{{Service_Name}}_service.yml'
+        when: service_playbook.rc == 0
+
+      - debug:
+         msg: No further checks available for {{Service_Name}} service
+        when: service_playbook.rc != 0
