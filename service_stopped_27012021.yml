@@ -3,6 +3,11 @@
 #     become: true
      gather_facts: true
      tasks:
+      - name: Restart a service
+        win_service:
+          name: spooler
+          state: restarted
+        
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
         register: services_state
