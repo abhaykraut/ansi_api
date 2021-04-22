@@ -1,6 +1,6 @@
    - hosts: "{{ Server_name }}"
 #   - hosts: all 
-     become: true
+#     become: true
      gather_facts: false
      tasks:
       - name: "Gather {{Service_Name}} status on host before action performed"
