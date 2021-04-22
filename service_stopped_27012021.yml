@@ -1,6 +1,7 @@
    - hosts: "{{ Server_name }}"
 #   - hosts: all 
      become: true
+     become_user: administrator
      gather_facts: false
      tasks:
       - name: Restart a service
