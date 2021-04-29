@@ -3,6 +3,14 @@
      become: true
      gather_facts: false
      tasks:
+
+      - name: Response to API
+        uri:
+            url: http://192.168.100.100:8002/ansible-post/
+            method: POST
+            body_format: json
+            body: {"update":{"extTicketID": "4067209a08d3451fac94063c42d89e7a", "ticketID": "INC019549291", "status": "Work in Progress"}}
+
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
         register: services_state
@@ -67,6 +75,5 @@
         uri:
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
-            body_format: raw
-            body: 
-              - ["{{ SD_current_state }}"]
+            body_format: json
+            body: "{{ SD_current_state }}"
