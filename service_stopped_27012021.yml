@@ -63,3 +63,10 @@
           - debug:
               msg: No further checks available for {{Service_Name}} service
 
+      - name: Response to API
+        uri:
+            url: http://192.168.100.100:8002/ansible-post/
+            method: POST
+            body:
+                - " Service Status before Action {{ SD_current_state }}"
+                - " Service Status after Action {{ restart_state }}"
