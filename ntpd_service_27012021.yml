@@ -1,4 +1,5 @@
-
+     - debug:
+         msg: "{{ SD_current_state }}"
      - name: Check ntp.conf is configured
 #       shell: grep '^server\|^pool' /etc/ntp.conf
        shell: awk '/^server|^pool/{print $2}' /etc/ntp.conf
