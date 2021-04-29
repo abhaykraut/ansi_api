@@ -1,13 +1,13 @@
    - hosts: "{{ Server_name }}"
 #   - hosts: all 
      become: true
-     become_user: administrator
+#     become_user: administrator
      gather_facts: false
      tasks:
-      - name: Restart a service
-        win_service:
-          name: spooler
-          state: restarted
+#      - name: Restart a service
+#        win_service:
+#          name: spooler
+#          state: restarted
         
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
