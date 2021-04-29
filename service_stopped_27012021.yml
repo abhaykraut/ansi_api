@@ -67,5 +67,5 @@
         uri:
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
-            body_format: form-multipart
+            body_format: json
             body: "{{ SD_current_state }}"
