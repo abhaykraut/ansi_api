@@ -9,7 +9,7 @@
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
             body_format: json
-            body: {"update":{"automation_executed": "1", "extTicketID": "f74766762f5030103d06dc1a2799b6ad", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress"}}
+            body: {"update":{"extTicketID": "f74766762f5030103d06dc1a2799b6ad", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress", "automation_executed": "1"}}
 
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
