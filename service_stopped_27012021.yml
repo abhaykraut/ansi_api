@@ -51,13 +51,19 @@
         register: restart_state
         when: "SD_current_state is not search('running') or SV_current_state is not search('running')"
 
-      - name: "SystemD: {{Service_Name}} status after action performed"
-        debug:
-         var: restart_state.ansible_facts.services["{{Service_Name}}.service"].state
+#      - name: "SystemD: {{Service_Name}} status after action performed"
+#        debug:
+#         var: restart_state.ansible_facts.services["{{Service_Name}}.service"].state
+      - name: Response to API
+        uri:
+            url: http://192.168.100.100:8002/ansible-post/
+            method: POST
+            body_format: json
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": " {{restart_state.ansible_facts.services["{{Service_Name}}.service"].state}} ", "automation_executed": "1"}}
         when:
            - restart_state is search("running")
            - restart_state is search("systemd")
-
+           
       - name: "SysV: {{Service_Name}} status after action perform"
         debug:
          var: services_state.ansible_facts.services.{{Service_Name}}.state
