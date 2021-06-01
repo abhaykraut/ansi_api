@@ -59,7 +59,7 @@
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
             body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": " {{restart_state.ansible_facts.services["{{Service_Name}}.service"].state}} ", "automation_executed": "1"}}
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "{{restart_state.ansible_facts.services["{{Service_Name}}.service"].state}}", "automation_executed": "1"}}
         when:
            - restart_state is search("running")
            - restart_state is search("systemd")
