@@ -9,7 +9,8 @@
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
             body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress", "automation_executed": "1"}}
+#            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress", "automation_executed": "1"}}
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress"}}
 
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
@@ -25,7 +26,6 @@
         debug:
          var: services_state.ansible_facts.services.{{Service_Name}}.state
         register: SV_current_state
-#        when: services_state is search("sysv")
         when: services_state is search("sysv")
 
       - debug: 
@@ -57,6 +57,10 @@
         when:
            - restart_state is search("running")
            - restart_state is search("systemd")
+		   
+
+
+
 
       - name: "SysV: {{Service_Name}} status after action perform"
         debug:
@@ -65,6 +69,19 @@
            - restart_state is search("running")
 #           - restart_state is search("sysv")
            - restart_state is not search("systemd")
+		   
+
+      - name: Response to API
+        uri:
+            url: http://192.168.100.100:8002/ansible-post/
+            method: POST
+            body_format: json
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service started", "automation_executed": "1"}}		   
+        when:
+           - restart_state is search("running")
+#		   - "Service_Name is not search('ntp') or Service_Name is not search('ntpd')"
+
+
       - block:
           - include_tasks: '{{Service_Name}}_service_27012021.yml'
         rescue:
