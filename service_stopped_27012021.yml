@@ -71,7 +71,7 @@
             url: http://192.168.100.100:8002/ansible-post/
             method: POST
             body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service started", "automation_executed": "1"}}		   
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service started", "automation_executed": "0"}}		   
         when:
            - restart_state is search("running")
 #		   - "Service_Name is not search('ntp') or Service_Name is not search('ntpd')"
