@@ -57,9 +57,6 @@
         when:
            - restart_state is search("running")
            - restart_state is search("systemd")
-		   
-
-
 
 
       - name: "SysV: {{Service_Name}} status after action perform"
@@ -69,7 +66,6 @@
            - restart_state is search("running")
 #           - restart_state is search("sysv")
            - restart_state is not search("systemd")
-		   
 
       - name: Response to API
         uri:
