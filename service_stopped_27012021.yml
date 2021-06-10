@@ -33,7 +33,7 @@
             method: POST
             body_format: json
             body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service name is not correct", "automation_executed": "0"}}		   
-        when: "SV_current_state is not search('VARIABLE IS NOT DEFINED!') and SD_current_state is not search('VARIABLE IS NOT DEFINED!')" 
+        when: "SV_current_state is search('VARIABLE IS NOT DEFINED!') and SD_current_state is search('VARIABLE IS NOT DEFINED!')" 
 
       - debug: 
           msg: '{{ SD_current_state }}'
