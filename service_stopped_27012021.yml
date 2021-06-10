@@ -27,6 +27,14 @@
         register: SV_current_state
         when: services_state is search("sysv")
 
+      - name: Eject Response to API if serivce name is not correct
+        uri:
+            url: http://192.168.100.100:8002/ansible-post/
+            method: POST
+            body_format: json
+            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service name is not correct", "automation_executed": "0"}}		   
+        when: "SV_current_state is not search('VARIABLE IS NOT DEFINED!') and SD_current_state is not search('VARIABLE IS NOT DEFINED!')" 
+
       - debug: 
           msg: '{{ SD_current_state }}'
       - name: Perform starting of service
