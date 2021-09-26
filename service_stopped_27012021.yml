@@ -4,12 +4,12 @@
      gather_facts: false
      tasks:
 
-      - name: Response to API
-        uri:
-            url: http://192.168.100.100:8002/ansible-post/
-            method: POST
-            body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress", "automation_executed": "2"}}
+#      - name: Response to API
+#        uri:
+#            url: http://192.168.100.100:8002/ansible-post/
+#            method: POST
+#            body_format: json
+#            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Work in Progress", "automation_executed": "2"}}
 
       - name: "Gather {{Service_Name}} status on host before action performed"
         service_facts:
