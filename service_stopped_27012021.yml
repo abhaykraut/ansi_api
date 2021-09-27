@@ -74,24 +74,24 @@
 #           - restart_state is search("sysv")
            - restart_state is not search("systemd")
 
-      - name: Response to API
-        uri:
-            url: http://192.168.100.100:8002/ansible-post/
-            method: POST
-            body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service started", "automation_executed": "1"}}		   
-        when:
-           - restart_state is search("running")
+#      - name: Response to API
+#        uri:
+#            url: http://192.168.100.100:8002/ansible-post/
+#            method: POST
+#            body_format: json
+#            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service started", "automation_executed": "1"}}		   
+#        when:
+#           - restart_state is search("running")
 #		   - "Service_Name is not search('ntp') or Service_Name is not search('ntpd')"
 
-      - name: Response to API
-        uri:
-            url: http://192.168.100.100:8002/ansible-post/
-            method: POST
-            body_format: json
-            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service not started", "automation_executed": "0"}}		   
-        when:
-           - restart_state is not search("running")
+#      - name: Response to API
+#        uri:
+#            url: http://192.168.100.100:8002/ansible-post/
+#            method: POST
+#            body_format: json
+#            body: {"update":{"extTicketID": "{{ sys_id }}", "ticketID": "{{ Ticket_ID }}", "status": "Service not started", "automation_executed": "0"}}		   
+#        when:
+#           - restart_state is not search("running")
 
       - block:
           - include_tasks: '{{Service_Name}}_service_27012021.yml'
