@@ -1,4 +1,0 @@
-- hosts: "{{ Server_name }}"
-#    - all
-  tasks:
-    - action: ping
